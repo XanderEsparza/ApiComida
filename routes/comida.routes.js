@@ -8,4 +8,6 @@ Router.get("/comida", (req,res) =>{
     })
 })
 
+Router.get("/comida/show", comidaController.show)
+
 module.exports = Router;
