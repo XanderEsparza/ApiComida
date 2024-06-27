@@ -10,9 +10,8 @@ app.use(express.json());
 app.use(morgan('dev'));
 app.use('/api', comidaRoute)
 
-const mongoURI = 'mongodb://127.0.0.1:27017/nombre_base_datos';
+const mongoURI = 'mongodb://127.0.0.1:27017/comida';
 
-// Conectar a MongoDB
 mongoose.connect(mongoURI)
   .then(() => console.log('Conectado a MongoDB'))
   .catch(err => console.error('No se pudo conectar a MongoDB', err));
