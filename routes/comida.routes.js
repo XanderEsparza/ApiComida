@@ -9,5 +9,6 @@ Router.get("/comida", (req,res) =>{
 })
 
 Router.get("/comida/show", comidaController.show)
+Router.get("/comida/find/:nombre", comidaController.find)
 
 module.exports = Router;
