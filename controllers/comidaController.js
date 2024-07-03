@@ -1,6 +1,5 @@
 const Comida = require('../models/comidaModel');
 
-// Crear nuevo producto de comida
 const createComida = async (req, res) => {
     const { nombre, precio, descripcion, existencia } = req.body;
     try {
