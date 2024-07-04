@@ -10,10 +10,11 @@ app.use(express.json());
 app.use(morgan('dev'));
 app.use('/api', comidaRoute)
 
-mongoose.connect('mongodb://localhost:27017/comida', {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-});
+const mongoURI = 'mongodb://127.0.0.1:27017/comida'
+mongoose.connect(mongoURI)
+    .then(() => console.log("Conectado a mongo db"))
+    .catch(err => console.error('no se pudo conectar', err))
+;
 
 app.use((req, res) => {
     res.status(404).json({

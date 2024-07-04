@@ -1,9 +1,5 @@
 const Comida = require('../models/comidaModel');
 
-
-// comidaController.js
-const Comida = require('../models/comidaModel');
-
 const actualizarComida = async (req, res) => {
     const { id } = req.params;
     const { nombre, precio, descripcion, existencia } = req.body;
@@ -24,6 +20,7 @@ const actualizarComida = async (req, res) => {
         res.status(500).json({ message: 'Error actualizando la comida', error });
     }
 };
+
 
 module.exports = {
     actualizarComida,
