@@ -1,45 +1,29 @@
 const express = require('express');
 const morgan = require('morgan');
-const mongoose = require('mongoose');
-const comidaRoutes = require('./routes/comida.routes');
-const usuariosRoutes = require('./routes/usuarios.routes');
-
 const app = express();
 const port = 4000;
-const mongoURI = 'mongodb://127.0.0.1:27017/comidas';
+const comidaRoute = require('./routes/comida.routes');
+const userRoute = require('./routes/user.routes');
+const mongoose = require('mongoose');
 
-// Middleware
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(morgan('dev'));
 
-// Conexión a MongoDB
-mongoose.connect(mongoURI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useCreateIndex: true,
-    useFindAndModify: false
-}).then(() => {
-    console.log("Conectado a MongoDB");
-}).catch(err => {
-    console.error("Error al conectar a MongoDB:", err);
-    process.exit(1); 
-});
+app.use('/api', comidaRoute);
+app.use('/api', userRoute);
 
-// 
-app.use('/api/comida', comidaRoutes);
+const mongoURI = 'mongodb://127.0.0.1:27017/comidas';
+mongoose.connect(mongoURI)
+  .then(() => console.log('Conectado a MongoDB'))
+  .catch(err => console.error('No se pudo conectar', err));
 
-// 
-app.use('/api/usuarios', usuariosRoutes);
-
-// 
 app.use((req, res) => {
-    res.status(404).json({
-        message: "Ruta no encontrada"
-    });
+  res.status(404).json({
+    message: 'Ruta no encontrada'
+  });
 });
 
-// Iniciar servidor
 app.listen(port, () => {
-    console.log(`Aplicación corriendo en el puerto ${port}`);
+  console.log(`Aplicación corriendo en el puerto ${port}`);
 });
