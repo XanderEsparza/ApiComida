@@ -4,15 +4,15 @@ const app = express();
 const port = 4000;
 const comidaRoute = require('./routes/comida.routes')
 const mongoose = require("mongoose"); 
+require('dotenv').config()
 
 app.use(express.urlencoded({extended:false}));
 app.use(express.json());
 app.use(morgan('dev'));
 app.use('/api', comidaRoute)
 
-const mongoURI = 'mongodb://127.0.0.1:27017/comida';
 
-mongoose.connect(mongoURI)
+mongoose.connect(process.env.mongoURI)
   .then(() => console.log('Conectado a MongoDB'))
   .catch(err => console.error('No se pudo conectar a MongoDB', err));
 
