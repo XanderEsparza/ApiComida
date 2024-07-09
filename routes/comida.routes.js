@@ -8,4 +8,6 @@ Router.get("/comida", (req,res) =>{
     })
 })
 
+Router.delete("/comida/nombre/:nombre", comidaController.eliminarComidaPorNombre)
+
 module.exports = Router;
