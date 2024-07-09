@@ -3,6 +3,7 @@ const morgan = require("morgan")
 const app = express();
 const port = 4000;
 const comidaRoute = require('./routes/comida.routes')
+const userRoute = require('./routes/user.routes');
 const mongoose = require("mongoose"); 
 require('dotenv').config()
 
@@ -10,6 +11,7 @@ app.use(express.urlencoded({extended:false}));
 app.use(express.json());
 app.use(morgan('dev'));
 app.use('/api', comidaRoute)
+app.use('/api', userRoute);
 
 
 mongoose.connect(process.env.mongoURI)

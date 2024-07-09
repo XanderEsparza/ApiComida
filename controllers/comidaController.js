@@ -1,5 +1,18 @@
 const Comida = require('../models/comidaModel');
 
+const createComida = async (req, res) => {
+    const { nombre, precio, descripcion, existencia } = req.body;
+    try {
+        const newComida = new Comida({ nombre, precio, descripcion, existencia });
+        await newComida.save();
+        res.status(201).json(newComida);
+    } catch (error) {
+        res.status(500).json({ message: "Error al crear el producto de comida", error });
+    }
+};
+
+
+
 const show = async(req, res) =>{
     try{
         const comidas = await Comida.find();
@@ -69,5 +82,6 @@ module.exports = {
     show,
     find,
     eliminarComidaPorNombre,
-    actualizarComida
+    actualizarComida,
+    createComida
 }
