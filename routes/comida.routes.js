@@ -7,7 +7,8 @@ Router.get("/comida", (req,res) =>{
         message:"Si sirve"
     })
 })
-
+Router.get("/comida/show", comidaController.show)
+Router.get("/comida/find/:key/:attribute", comidaController.find)
 Router.delete("/comida/nombre/:nombre", comidaController.eliminarComidaPorNombre)
 
 module.exports = Router;
