@@ -4,6 +4,7 @@ const app = express();
 const port = 4000;
 const comidaRoute = require('./routes/comida.routes')
 const mongoose = require("mongoose"); 
+require("dotenv").config();
 
 app.use(express.urlencoded({extended:false}));
 app.use(express.json());
