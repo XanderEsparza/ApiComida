@@ -15,6 +15,14 @@ const UserSchema = new mongoose.Schema({
   password: {
     type: String,
     required: true
+  },
+  rol:{
+    type: String,
+    default: 'user',
+  },
+  status:{
+    type: String,
+    default: 'pendiente'
   }
 });
 
