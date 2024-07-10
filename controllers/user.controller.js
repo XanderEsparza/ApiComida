@@ -93,7 +93,7 @@ const confirmUser = async (req, res) => {
   const { token } = req.params;
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    await Usuario.findByIdAndUpdate(decoded.userId, { status: 'activo' });
+    await User.findByIdAndUpdate(decoded.userId, { status: 'activo' });
     res.send('Usuario aceptado');
   } catch (error) {
       console.log('error', error)
@@ -105,7 +105,7 @@ const denyUser = async (req, res) => {
   const { token } = req.params;
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    await Usuario.findByIdAndDelete(decoded.userId);
+    await User.findByIdAndDelete(decoded.userId);
     res.send('Usuario rechazado');
   } catch (error) {
     res.status(400).send('Token invalido');
