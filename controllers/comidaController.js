@@ -7,6 +7,9 @@ const createComida = async (req, res) => {
         await newComida.save();
         res.status(201).json(newComida);
     } catch (error) {
+        if (error.name === 'ValidationError') {
+            return res.status(400).send({ errors: error.errors });
+          }
         res.status(500).json({ message: "Error al crear el producto de comida", error });
     }
 };
@@ -25,7 +28,14 @@ const show = async(req, res) =>{
 const find = async(req, res) => {
     const {key, attribute} = req.params
     const search = {}
-    search[key] = attribute
+    if (key === 'precio' || key === 'existencia') {
+        if (isNaN(attribute)) {
+            return res.status(400).send(`El valor para ${key} debe ser un número.`);
+        }
+        search[key] = Number(attribute);
+    } else {
+        search[key] = { $regex: attribute, $options: 'i' }; // Utiliza regex para búsquedas parciales e insensibles a mayúsculas/minúsculas
+    }
     try {
         const comidas = await Comida.find(search)
         if(comidas.length === 0){

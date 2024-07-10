@@ -14,9 +14,9 @@ Router.get("/comida", (req, res) => {
 })
 Router.get("/comida/show", verifyToken, checkStatusAuth(['activo']), comidaController.show)
 Router.get("/comida/find/:key/:attribute", verifyToken, checkStatusAuth(['activo']), comidaController.find)
-Router.delete("/comida/eliminar/nombre/:nombre", verifyToken, checkRoleAuth(['admin']), comidaController.eliminarComidaPorNombre)
-Router.post("/comida/crear", verifyToken, checkRoleAuth(['admin']), comidaController.createComida);
-Router.put("/comida/actualizar/:id", verifyToken, checkRoleAuth(['admin']), comidaController.actualizarComida);
+Router.delete("/comida/eliminar/nombre/:nombre", verifyToken, checkStatusAuth(['activo']), comidaController.eliminarComidaPorNombre)
+Router.post("/comida/crear", verifyToken, checkStatusAuth(['activo']), comidaController.createComida);
+Router.put("/comida/actualizar/:id", verifyToken, checkStatusAuth(['activo']), comidaController.actualizarComida);
 
 
 module.exports = Router;

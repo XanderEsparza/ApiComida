@@ -3,7 +3,7 @@ const router = express.Router();
 const verifyToken = require('../middlewares/verifyToken')
 const checkStatusAuth = require('../middlewares/statusAuth')
 const checkRoleAuth = require("../middlewares/rolAuth")
-const { createUser, deleteUser, getAllUsers, updateUser, confirmUser, denyUser } = require('../controllers/user.controller');
+const { createUser, deleteUser, getAllUsers, updateUser, confirmUser, denyUser, find } = require('../controllers/user.controller');
 
 // Crear un nuevo usuario
 router.post('/users', createUser);
@@ -17,5 +17,7 @@ router.post('/crear',  createUser);
 router.delete('/eliminar/:id', verifyToken, checkRoleAuth(['admin']), deleteUser);
 router.put('/store/confirm/:token', verifyToken, checkRoleAuth(['admin']), confirmUser)
 router.delete('/store/deny/:token', verifyToken, checkRoleAuth(['admin']), denyUser)
+router.get('/find/:key/:attribute', verifyToken, checkRoleAuth(['admin']), find);
+
 
 module.exports = router;

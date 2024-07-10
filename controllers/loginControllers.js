@@ -15,6 +15,11 @@ const Login = async (req, res) => {
         if (!isMatch) {
             return res.status(400).send('Contraseña incorrecta');
         }
+
+        if(username.status === 'pendiente'){
+            return res.status(400).send('Acceso denegado. Usuario a la espera de confirmación del administrador')
+        }
+
         const token = jwt.sign({ userId: username._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
         res.cookie('token', token, { httpOnly: true });
 

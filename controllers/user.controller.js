@@ -40,10 +40,38 @@ const createUser = async (req, res) => {
     });
     
   } catch (error) {
-    res.status(500).json({ message: 'Error al crear usuario', error });
-    console.log(error)
+    if (error.code === 11000) {
+      const field = Object.keys(error.keyValue)[0];
+      res.status(409).send(`El ${field} ya está en uso. Por favor elige otro.`);
+    } else if (error.name === 'ValidationError') {
+      res.status(400).send({ errors: error.errors });
+    } else {
+      res.status(500).send('Error del servidor');
+    }
+    console.log(error);
   }
 };
+
+const find = async(req, res) => {
+  const {key, attribute} = req.params
+  const search = {}
+  search[key] = { $regex: attribute, $options: 'i' };
+
+  try {
+      const usuario = await User.find(search)
+      if(usuario.length === 0){
+          res.status(404).send("No hay usuarios para mostrar")
+          console.log(search)
+      }else{
+          res.send(usuario)
+          console.log(search)
+      }
+      
+  } catch (error) {
+      res.status(500).send(error)
+      console.log(error)
+  }
+}
 
 const deleteUser = async (req, res) => {
   try {
@@ -118,5 +146,6 @@ module.exports = {
   createUser,
   deleteUser,
   confirmUser,
-  denyUser
+  denyUser,
+  find
 };
