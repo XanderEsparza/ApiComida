@@ -2,7 +2,7 @@
 const mongoose = require('mongoose');
 
 const UserSchema = new mongoose.Schema({
-  username: {
+  usuario: {
     type: String,
     required: true,
     unique: true
@@ -26,4 +26,12 @@ const UserSchema = new mongoose.Schema({
   }
 });
 
-module.exports = mongoose.model('User', UserSchema);
+const User = mongoose.model('User', UserSchema);
+
+User.init().then(() => {
+  console.log('Indexes ensured');
+}).catch(err => {
+  console.error('Index creation error:', err);
+});
+
+module.exports = User;

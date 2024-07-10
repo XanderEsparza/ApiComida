@@ -1,44 +1,24 @@
-const bcrypt = require('bcryptjs');
-const Usuario = require('../models/loginModel');
-
-
-const registro = async (req, res)=>{
-    try{
-        const {correo, pass} = req.body;
-        let usuario = await Usuario.findOne({correo});
-        if(usuario){
-            return res.status(400).json({mensaje: 'Usuario existente'});
-        }
-        usuario = new Usuario({
-            correo,
-            pass
-        });
-        const salt = await bcrypt.genSalt(10);
-        usuario.pass = await bcrypt.hash(pass, salt);
-
-        await usuario.save();
-        res.status(201).json({ mensaje: 'Usuario registrado' });
-    }
-    catch (err)
-    {
-        console.error(err.message);
-        res.status(500).send('Error del servidor');
-    }
-}
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken')
+const User = require('../models/user.model')
 
 const Login = async (req, res) => {
-    const { correo, pass } = req.body;
+    const { usuario, password } = req.body;
 
     try {
-        let usuario = await Usuario.findOne({ correo });
-        if (!usuario) {
-            return res.status(400).send('Correo no existente');
+        let username = await User.findOne({ usuario});
+        if (!username) {
+            return res.status(400).send('Usuario no existente');
         }
 
-        const isMatch = await bcrypt.compare(pass, usuario.pass);
+        const isMatch = await bcrypt.compare(password, username.password);
         if (!isMatch) {
             return res.status(400).send('Contraseña incorrecta');
         }
+        const token = jwt.sign({ userId: username._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+        res.cookie('token', token, { httpOnly: true });
+
+        console.log('token', token)
         res.status(200).send('Inicio de sesión exitoso');
     } catch (err) {
         console.error(err.message);
@@ -46,5 +26,9 @@ const Login = async (req, res) => {
     }
 };
 
+const logout = (req, res) => {
+    res.cookie('token', '', { expires: new Date(0) });
+    res.send('Sesion finalizada')
+};
 
-module.exports={registro, Login}
+module.exports={Login, logout}
